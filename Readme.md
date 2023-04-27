@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Andrey Vorontsov](https://up.htmlacademy.ru/ecmascript/20/user/2302307).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий (sench) Железцов](https://htmlacademy.ru/profile/sench).
 
 ---
 
