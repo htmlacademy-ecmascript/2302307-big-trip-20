@@ -1,3 +1,4 @@
+import { Filter } from '../const';
 import { createElement } from '../render';
 
 const createFilterItemTemplate = (value, isChecked = false) => (
@@ -7,12 +8,19 @@ const createFilterItemTemplate = (value, isChecked = false) => (
   </div>`
 );
 
-const createFiltersTemplate = () => (
+const createFilterItemsTemplate = (checkedItem) => {
+  let filterItemsTemplate = '';
+  const filters = Object.values(Filter);
+
+  filters.forEach((filter) => {
+    filterItemsTemplate += createFilterItemTemplate(filter, filter === checkedItem);
+  });
+  return filterItemsTemplate;
+};
+
+const createFiltersTemplate = (checkedItem = 'everything') => (
   `<form class="trip-filters" action="#" method="get">
-    ${createFilterItemTemplate('everything', true)}
-    ${createFilterItemTemplate('future')}
-    ${createFilterItemTemplate('present')}
-    ${createFilterItemTemplate('past')}
+    ${createFilterItemsTemplate(checkedItem)}
     <button class="visually-hidden" type="submit">Accept filter</button>
   </form>`
 );
