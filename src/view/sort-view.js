@@ -1,3 +1,4 @@
+import { Sort } from '../const';
 import { createElement } from '../render';
 
 const createSortItemTemplate = (value, isChecked = false) => (
@@ -7,13 +8,19 @@ const createSortItemTemplate = (value, isChecked = false) => (
   </div>`
 );
 
-const createSortTemplate = () => (
+const createSortItemsTemplate = (checkedItem) => {
+  let sortItemsTemplate = '';
+  const sort = Object.values(Sort);
+
+  sort.forEach((sortItem) => {
+    sortItemsTemplate += createSortItemTemplate(sortItem, sortItem === checkedItem);
+  });
+  return sortItemsTemplate;
+};
+
+const createSortTemplate = (checkedItem = 'day') => (
   `<form class="trip-events__trip-sort trip-sort" action="#" method="get">
-    ${createSortItemTemplate('day', true)}
-    ${createSortItemTemplate('event')}
-    ${createSortItemTemplate('time')}
-    ${createSortItemTemplate('price')}
-    ${createSortItemTemplate('offers')}
+    ${createSortItemsTemplate(checkedItem)}
   </form>`
 );
 
