@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
-import { createElement } from '../render';
 import { humanizeEventDate } from '../util';
+import AbstractView from '../framework/view/abstract-view';
 
 const getInfoTitle = (points, destinations) => {
   const uniqueLocations = [...new Set(points.map((pointObject) => pointObject.destination))];
@@ -62,25 +62,19 @@ const createTripInfoTemplate = (points, destinations, offers) => {
   </section>`);
 };
 
-export default class TripInfoView {
+export default class TripInfoView extends AbstractView {
+  #points = null;
+  #destinations = null;
+  #offers = null;
+
   constructor({ points, destinations, offers }) {
-    this.points = points;
-    this.destinations = destinations;
-    this.offers = offers;
+    super();
+    this.#points = points;
+    this.#destinations = destinations;
+    this.#offers = offers;
   }
 
-  getTemplate() {
-    return createTripInfoTemplate(this.points, this.destinations, this.offers);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return createTripInfoTemplate(this.#points, this.#destinations, this.#offers);
   }
 }
