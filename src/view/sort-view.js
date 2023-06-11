@@ -1,5 +1,5 @@
 import { Sort } from '../const';
-import { createElement } from '../render';
+import AbstractView from '../framework/view/abstract-view';
 
 const createSortItemTemplate = (value, isChecked = false) => (
   `<div class="trip-sort__item  trip-sort__item--${value}">
@@ -24,19 +24,8 @@ const createSortTemplate = (checkedItem = 'day') => (
   </form>`
 );
 
-export default class SortView {
-  getTemplate() {
+export default class SortView extends AbstractView {
+  get template() {
     return createSortTemplate();
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }

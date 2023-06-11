@@ -1,6 +1,6 @@
-import { createElement } from '../render';
 import { EventType } from '../const';
 import { capitalize } from '../util';
+import AbstractView from '../framework/view/abstract-view';
 
 const createPointTypeItemTemplate = (type, isChecked = false) => (
   `<div class="event__type-item">
@@ -111,24 +111,17 @@ const createAddNewPointTemplate = (destinations, offers, currentType = EventType
   </li>`
 );
 
-export default class AddNewPointView {
+export default class AddNewPointView extends AbstractView {
+  #destinations = null;
+  #offers = null;
+
   constructor({ destinations, offers }) {
-    this.destinations = destinations;
-    this.offers = offers;
+    super();
+    this.#destinations = destinations;
+    this.#offers = offers;
   }
 
-  getTemplate() {
-    return createAddNewPointTemplate(this.destinations, this.offers);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return createAddNewPointTemplate(this.#destinations, this.#offers);
   }
 }

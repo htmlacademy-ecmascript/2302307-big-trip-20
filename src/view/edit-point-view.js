@@ -1,6 +1,6 @@
-import { createElement } from '../render';
 import { EventType } from '../const';
 import { capitalize, humanizeEditEventDatetime } from '../util';
+import AbstractView from '../framework/view/abstract-view';
 
 const createPointTypeItemTemplate = (type, isChecked = false) => (
   `<div class="event__type-item">
@@ -145,25 +145,37 @@ const createEditPointTemplate = (point, destinations, offersData) => {
   );
 };
 
-export default class EditPointView {
-  constructor({ point, destinations, offers }) {
-    this.point = point;
-    this.destinations = destinations;
-    this.offers = offers;
+export default class EditPointView extends AbstractView {
+  #point = null;
+  #destinations = null;
+  #offers = null;
+  #handleFormSubmit = null;
+  #handleFormClose = null;
+
+  constructor({ point, destinations, offers, onFormSubmit, onFormClose }) {
+    super();
+    this.#point = point;
+    this.#destinations = destinations;
+    this.#offers = offers;
+
+    this.#handleFormSubmit = onFormSubmit;
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+
+    this.#handleFormClose = onFormClose;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formCloseHandler);
   }
 
-  getTemplate() {
-    return createEditPointTemplate(this.point, this.destinations, this.offers);
+  get template() {
+    return createEditPointTemplate(this.#point ,this.#destinations, this.#offers);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-    return this.element;
-  }
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormSubmit();
+  };
 
-  removeElement() {
-    this.element = null;
-  }
+  #formCloseHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleFormClose();
+  };
 }
