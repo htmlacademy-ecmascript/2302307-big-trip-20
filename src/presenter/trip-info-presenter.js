@@ -18,6 +18,8 @@ export default class TripInfoPresenter {
     this.#destinations = [...this.#pointsModel.destinations];
     this.#offers = [...this.#pointsModel.offers];
 
-    render(new TripInfoView({ points: this.#points, destinations: this.#destinations, offers: this.#offers }), this.#tripInfoContainer, RenderPosition.AFTERBEGIN);
+    if (this.#points.length > 0) {
+      render(new TripInfoView({ points: this.#points, destinations: this.#destinations, offers: this.#offers }), this.#tripInfoContainer, RenderPosition.AFTERBEGIN);
+    }
   }
 }

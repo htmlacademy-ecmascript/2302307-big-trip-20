@@ -1,4 +1,4 @@
-import { getRandomArrayElement, getRandomInt } from '../util';
+import { getRandomArrayElement, getRandomInt } from '../utils/common';
 
 const cities = ['Berlin', 'Paris', 'London', 'Barcelona', 'Amsterdam'];
 const loremDescriptions = [

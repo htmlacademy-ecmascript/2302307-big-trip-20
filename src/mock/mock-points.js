@@ -1,7 +1,7 @@
 import { EventType } from '../const';
-import { getRandomArrayElement, getRandomInt } from '../util';
+import { getRandomArrayElement, getRandomInt } from '../utils/common';
 
-const POINT_COUNT = getRandomInt(2, 10);
+const POINT_COUNT = getRandomInt(0, 5);
 const mockPoints = [];
 
 const createMockPoints = () => {
