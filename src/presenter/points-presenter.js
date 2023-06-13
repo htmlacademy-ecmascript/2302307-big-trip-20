@@ -1,8 +1,8 @@
 import { render, replace } from '../framework/render';
-import SortView from '../view/sort-view';
 import PointListView from '../view/point-list-view';
 import PointView from '../view/point-view';
 import EditPointView from '../view/edit-point-view';
+import EmptyListView from '../view/empty-list-view';
 
 export default class PointsPresenter {
   #pointListComponent = new PointListView();
@@ -22,15 +22,10 @@ export default class PointsPresenter {
     this.#destinations = [...this.#pointsModel.destinations];
     this.#offers = [...this.#pointsModel.offers];
 
-    render(new SortView(), this.#pointsContainer);
-    render(this.#pointListComponent, this.#pointsContainer);
-
-    for (let i = 0; i < this.#points.length; i++) {
-      this.#renderPoint({
-        point: this.#points[i],
-        destinations: this.#destinations,
-        offers: this.#offers
-      });
+    if (this.#points.length === 0) {
+      this.#renderEmptyList();
+    } else {
+      this.#renderPoints();
     }
   }
 
@@ -75,13 +70,19 @@ export default class PointsPresenter {
     render(pointComponent, this.#pointListComponent.element);
   }
 
-  #handleEditPointButtonClick = () => {
+  #renderPoints() {
+    render(this.#pointListComponent, this.#pointsContainer);
 
-  };
+    for (let i = 0; i < this.#points.length; i++) {
+      this.#renderPoint({
+        point: this.#points[i],
+        destinations: this.#destinations,
+        offers: this.#offers
+      });
+    }
+  }
 
-  // render(new EditPointView({
-  //   point: this.points[0],
-  //   destinations: this.destinations,
-  //   offers: this.offers,
-  // }), this.pointListComponent.getElement());
+  #renderEmptyList() {
+    render(new EmptyListView(), this.#pointsContainer);
+  }
 }

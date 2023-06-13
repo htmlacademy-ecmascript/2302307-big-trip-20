@@ -1,5 +1,5 @@
 import { EventType } from '../const';
-import { getRandomInt } from '../util';
+import { getRandomInt } from '../utils/common';
 
 const mockOffers = [];
 

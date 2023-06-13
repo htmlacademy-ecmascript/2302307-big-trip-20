@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { humanizeEventDate } from '../util';
+import { humanizeEventDate } from '../utils/point';
 import AbstractView from '../framework/view/abstract-view';
 
 const getInfoTitle = (points, destinations) => {

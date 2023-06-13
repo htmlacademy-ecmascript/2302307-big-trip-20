@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import { capitalize, humanizeEventDate, humanizeEventTime } from '../util';
+import { capitalize } from '../utils/common';
+import { humanizeEventDate, humanizeEventTime } from '../utils/point';
 import AbstractView from '../framework/view/abstract-view';
 
 const createSelectedOffersTemplate = (selectedOffers, offersByCurrentType) => {

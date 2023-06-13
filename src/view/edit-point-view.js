@@ -1,5 +1,6 @@
 import { EventType } from '../const';
-import { capitalize, humanizeEditEventDatetime } from '../util';
+import { capitalize } from '../utils/common';
+import { humanizeEditEventDatetime } from '../utils/point';
 import AbstractView from '../framework/view/abstract-view';
 
 const createPointTypeItemTemplate = (type, isChecked = false) => (

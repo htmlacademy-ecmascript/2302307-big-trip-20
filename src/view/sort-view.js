@@ -1,31 +1,45 @@
-import { Sort } from '../const';
 import AbstractView from '../framework/view/abstract-view';
 
-const createSortItemTemplate = (value, isChecked = false) => (
-  `<div class="trip-sort__item  trip-sort__item--${value}">
-    <input id="sort-${value}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${value}" ${isChecked ? 'checked' : ''}>
-    <label class="trip-sort__btn" for="sort-${value}">${value}</label>
+const createSortItemTemplate = (type, count, isChecked) => (
+  `<div class="trip-sort__item  trip-sort__item--${type}">
+    <input
+      id="sort-${type}"
+      class="trip-sort__input  visually-hidden"
+      type="radio"
+      name="trip-sort"
+      value="sort-${type}"
+      ${isChecked ? 'checked' : ''}
+      ${count === 0 ? 'disabled' : ''}
+    >
+    <label class="trip-sort__btn" for="sort-${type}">${type}</label>
   </div>`
 );
 
-const createSortItemsTemplate = (checkedItem) => {
+const createSortItemsTemplate = (sort) => {
   let sortItemsTemplate = '';
-  const sort = Object.values(Sort);
 
-  sort.forEach((sortItem) => {
-    sortItemsTemplate += createSortItemTemplate(sortItem, sortItem === checkedItem);
+  sort.forEach((sortItem, index) => {
+    const { type, count } = sortItem;
+    sortItemsTemplate += createSortItemTemplate(type, count, index === 0);
   });
   return sortItemsTemplate;
 };
 
-const createSortTemplate = (checkedItem = 'day') => (
+const createSortTemplate = (sort) => (
   `<form class="trip-events__trip-sort trip-sort" action="#" method="get">
-    ${createSortItemsTemplate(checkedItem)}
+    ${createSortItemsTemplate(sort)}
   </form>`
 );
 
 export default class SortView extends AbstractView {
+  #sort = null;
+
+  constructor({ sort }) {
+    super();
+    this.#sort = sort;
+  }
+
   get template() {
-    return createSortTemplate();
+    return createSortTemplate(this.#sort);
   }
 }
