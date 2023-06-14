@@ -1,19 +1,22 @@
-import { render, replace } from '../framework/render';
+import { render } from '../framework/render';
 import PointListView from '../view/point-list-view';
-import PointView from '../view/point-view';
-import EditPointView from '../view/edit-point-view';
-import EmptyListView from '../view/empty-list-view';
+import NoPointsView from '../view/no-points-view';
+import PointPresenter from './point-presenter';
+import { updateItem } from '../utils/common';
 
 export default class PointsPresenter {
   #pointListComponent = new PointListView();
-  #pointsContainer = null;
+  #noPointsComponent = new NoPointsView();
+  #mainContainer = null;
   #pointsModel = null;
+
   #points = [];
   #destinations = [];
   #offers = [];
+  #pointPresenters = new Map();
 
   constructor({ pointsContainer, pointsModel }) {
-    this.#pointsContainer = pointsContainer;
+    this.#mainContainer = pointsContainer;
     this.#pointsModel = pointsModel;
   }
 
@@ -23,55 +26,30 @@ export default class PointsPresenter {
     this.#offers = [...this.#pointsModel.offers];
 
     if (this.#points.length === 0) {
-      this.#renderEmptyList();
-    } else {
-      this.#renderPoints();
+      this.#renderNoPoints();
+      return;
     }
+
+    this.#renderPoints();
+  }
+
+  #renderNoPoints() {
+    render(this.#noPointsComponent, this.#mainContainer);
   }
 
   #renderPoint({ point, destinations, offers }) {
-    const escKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape') {
-        evt.preventDefault();
-        replaceFormToPoint();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    };
+    const pointPresenter = new PointPresenter({
+      pointsContainer: this.#pointListComponent.element,
+      onDataChange: this.#dataChangeHandler,
+      onStateChange: this.#stateChangeHandler
+    });
 
-    const pointComponent = new PointView({
-      point,
-      destinations,
-      offers,
-      onEditClick: () => {
-        replacePointToForm();
-        document.addEventListener('keydown', escKeyDownHandler);
-      }});
-
-    const editPointFormComponent = new EditPointView({
-      point,
-      destinations,
-      offers,
-      onFormSubmit: () => {
-        escKeyDownHandler();
-      },
-      onFormClose: () => {
-        replaceFormToPoint();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }});
-
-    function replaceFormToPoint() {
-      replace(pointComponent, editPointFormComponent);
-    }
-
-    function replacePointToForm() {
-      replace(editPointFormComponent, pointComponent);
-    }
-
-    render(pointComponent, this.#pointListComponent.element);
+    pointPresenter.init({ point, destinations, offers });
+    this.#pointPresenters.set(point.id, pointPresenter);
   }
 
   #renderPoints() {
-    render(this.#pointListComponent, this.#pointsContainer);
+    render(this.#pointListComponent, this.#mainContainer);
 
     for (let i = 0; i < this.#points.length; i++) {
       this.#renderPoint({
@@ -82,7 +60,21 @@ export default class PointsPresenter {
     }
   }
 
-  #renderEmptyList() {
-    render(new EmptyListView(), this.#pointsContainer);
+  #clearPointList() {
+    this.#pointPresenters.forEach((presenter) => presenter.destroy());
+    this.#pointPresenters.clear();
   }
+
+  #dataChangeHandler = (updatedPoint) => {
+    this.#points = updateItem(this.#points, updatedPoint);
+    this.#pointPresenters.get(updatedPoint.id).init({
+      point: updatedPoint,
+      destinations: this.#destinations,
+      offers: this.#offers
+    });
+  };
+
+  #stateChangeHandler = () => {
+    this.#pointPresenters.forEach((presenter) => presenter.resetView());
+  };
 }

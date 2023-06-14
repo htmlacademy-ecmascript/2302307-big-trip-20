@@ -32,6 +32,11 @@ export const EmptyListText = {
   PAST: 'There are no past events now'
 };
 
+export const PointState = {
+  DEFAULT: 'DEFAULT',
+  EDITING: 'EDITING'
+};
+
 export const EVENT_DATE_FORMAT = 'MMM D';
 export const EVENT_TIME_FORMAT = 'HH:mm';
 export const EDIT_EVENT_DATETIME_FORMAT = 'DD/MM/YY HH:mm';
