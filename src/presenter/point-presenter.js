@@ -33,16 +33,16 @@ export default class PointPresenter {
       point: this.#point,
       destinations: this.#destinations,
       offers: this.#offers,
-      onEditClick: this.#editClickHandler,
-      onFavoriteClick: this.#favoriteClickHandler
+      onEditClick: this.#handleEditClick,
+      onFavoriteClick: this.#handleFavoriteClick
     });
 
     this.#pointEditComponent = new EditPointView({
       point: this.#point,
       destinations: this.#destinations,
       offers: this.#offers,
-      onFormSubmit: this.#formSubmitHandler,
-      onFormClose: this.#formCLoseHandler
+      onFormSubmit: this.#handleFormSubmit,
+      onFormClose: this.#handleFormClose
     });
 
     if (prevPointComponent === null || prevPointEditComponent === null) {
@@ -94,20 +94,20 @@ export default class PointPresenter {
     this.#state = PointState.EDITING;
   }
 
-  #editClickHandler = () => {
+  #handleEditClick = () => {
     this.#replacePointToForm();
   };
 
-  #formSubmitHandler = (point) => {
+  #handleFormSubmit = (point) => {
     this.#handleDataChange(point);
     this.#replaceFormToPoint();
   };
 
-  #formCLoseHandler = () => {
+  #handleFormClose = () => {
     this.#replaceFormToPoint();
   };
 
-  #favoriteClickHandler = () => {
+  #handleFavoriteClick = () => {
     this.#handleDataChange({ ...this.#point, isFavorite: !this.#point.isFavorite });
   };
 }
