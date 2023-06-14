@@ -4,6 +4,7 @@ import TripInfoView from '../view/trip-info-view';
 export default class TripInfoPresenter {
   #tripInfoContainer = null;
   #pointsModel = null;
+
   #points = [];
   #destinations = [];
   #offers = [];

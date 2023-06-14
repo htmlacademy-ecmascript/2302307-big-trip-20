@@ -9,7 +9,7 @@ import { createMockSort } from './mock/mock-sort';
 
 
 const filtersContainerElement = document.querySelector('.trip-controls__filters');
-const pointsContainerElement = document.querySelector('.trip-events');
+const mainContainerElement = document.querySelector('.trip-events');
 const tripInfoContainerElement = document.querySelector('.trip-main');
 
 const pointsModel = new PointsModel();
@@ -22,12 +22,12 @@ const tripInfoPresenter = new TripInfoPresenter({
 });
 
 const pointsPresenter = new PointsPresenter({
-  pointsContainer: pointsContainerElement,
+  pointsContainer: mainContainerElement,
   pointsModel: pointsModel
 });
 
 render(new FiltersView({ filters }), filtersContainerElement);
-render(new SortView({ sort }), pointsContainerElement);
+render(new SortView({ sort }), mainContainerElement);
 
 tripInfoPresenter.init();
 pointsPresenter.init();

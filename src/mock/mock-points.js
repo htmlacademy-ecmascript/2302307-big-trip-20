@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import { EventType } from '../const';
 import { getRandomArrayElement, getRandomInt } from '../utils/common';
 
@@ -11,7 +12,7 @@ const createMockPoints = () => {
 
   for (let i = 0; i < POINT_COUNT; i++) {
     const point = {
-      'id': `point-${i}`,
+      'id': nanoid(),
       'basePrice': getRandomInt(50, 3000),
       'dateFrom': `2019-${rndMonth}-${rndDay}T${getRandomInt(0, 11)}:${getRandomInt(10, 59)}`,
       'dateTo': `2019-${rndMonth}-${rndDay++}T${getRandomInt(12, 23)}:${getRandomInt(10, 59)}`,
