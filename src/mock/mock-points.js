@@ -23,7 +23,7 @@ const createMockPoints = () => {
     };
 
     for (let j = 0; j < getRandomInt(0, 4); j++) {
-      point.offers.push(`offer-${j}`);
+      point.offers.push(`offer-${point.type}-${j}`);
     }
 
     mockPoints.push(point);
