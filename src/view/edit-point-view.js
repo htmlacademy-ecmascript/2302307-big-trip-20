@@ -1,7 +1,10 @@
-import { EventType } from '../const';
+import { EDIT_EVENT_DATETIME_FORMAT, EventType } from '../const';
 import { capitalize } from '../utils/common';
 import { humanizeEditEventDatetime } from '../utils/point';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view';
+import flatpickr from 'flatpickr';
+
+import 'flatpickr/dist/flatpickr.min.css';
 
 const createPointTypeItemTemplate = (type, isChecked = false) => (
   `<div class="event__type-item">
@@ -153,6 +156,8 @@ const createEditPointTemplate = (point, destinations, offersData) => {
 export default class EditPointView extends AbstractStatefulView {
   #destinations = null;
   #offers = null;
+  #datepickerFrom = null;
+  #datepickerTo = null;
   #handleFormSubmit = null;
   #handleFormClose = null;
 
@@ -177,6 +182,20 @@ export default class EditPointView extends AbstractStatefulView {
     );
   }
 
+  removeElement() {
+    super.removeElement();
+
+    if (this.#datepickerFrom) {
+      this.#datepickerFrom.destroy();
+      this.#datepickerFrom = null;
+    }
+
+    if (this.#datepickerTo) {
+      this.#datepickerTo.destroy();
+      this.#datepickerTo = null;
+    }
+  }
+
   static parsePointToState(point) {
     return { ...point };
   }
@@ -195,7 +214,28 @@ export default class EditPointView extends AbstractStatefulView {
     this.element.querySelectorAll('.event__offer-checkbox').forEach((element) => {
       element.addEventListener('change', this.#offersChangeHandler);
     });
+    this.#setDatepickerFrom();
+    this.#setDatepickerTo();
+  }
 
+  #setDatepickerFrom() {
+    this.#datepickerFrom = flatpickr(
+      this.element.querySelector('input#event-start-time-1'),
+      {
+        dateFormat: EDIT_EVENT_DATETIME_FORMAT,
+        onChange: this.#dateFromHandler
+      }
+    );
+  }
+
+  #setDatepickerTo() {
+    this.#datepickerFrom = flatpickr(
+      this.element.querySelector('input#event-end-time-1'),
+      {
+        dateFormat: EDIT_EVENT_DATETIME_FORMAT,
+        onChange: this.#dateToHandler
+      }
+    );
   }
 
   #formSubmitHandler = (evt) => {
@@ -242,6 +282,18 @@ export default class EditPointView extends AbstractStatefulView {
 
     this._setState({
       offers: selectedOffers
+    });
+  };
+
+  #dateFromHandler = ([userDate]) => {
+    this.updateElement({
+      dateFrom: userDate
+    });
+  };
+
+  #dateToHandler = ([userDate]) => {
+    this.updateElement({
+      dateTo: userDate
     });
   };
 }
