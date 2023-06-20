@@ -13,8 +13,8 @@ const createMockOffers = () => {
 
     for (let i = 0; i < 5; i++) {
       offer.offers.push({
-        'id': `offer-${i}`,
-        'title': `${eventType} upgrade`,
+        'id': `offer-${offer.type}-${i}`,
+        'title': `${offer.type} upgrade`,
         'price': getRandomInt(50, 1000)
       });
     }
