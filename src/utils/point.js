@@ -17,3 +17,14 @@ export const sortPointsByTime = (p1, p2) => {
 };
 
 export const sortPointsByPrice = (p1, p2) => p1.basePrice - p2.basePrice;
+
+export const sortPointsByDay = (p1, p2) => {
+  const p1DateFrom = dayjs(p1.dateFrom);
+  const p2DateFrom = dayjs(p2.dateFrom);
+
+  return p1DateFrom.diff(p2DateFrom, 'minute');
+};
+
+export const isDatesEqual = (date1, date2) => (date1 === null && date2 === null) || dayjs(date1).isSame(date2, 'D');
+
+export const isPricesEquals = (price1, price2) => (price1 === null && price2 === null) || price1 === price2;

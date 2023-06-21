@@ -1,7 +1,7 @@
 import { Sort } from '../const';
 import AbstractView from '../framework/view/abstract-view';
 
-const createSortItemTemplate = (type, isChecked) => (
+const createSortItemTemplate = (type, currentSort) => (
   `<div class="trip-sort__item  trip-sort__item--${type}">
     <input
       id="sort-${type}"
@@ -9,41 +9,43 @@ const createSortItemTemplate = (type, isChecked) => (
       type="radio"
       name="trip-sort"
       value="sort-${type}"
-      ${isChecked ? 'checked' : ''}
+      ${currentSort === type ? 'checked' : ''}
       ${type === Sort.EVENT || type === Sort.OFFERS ? 'disabled' : ''}
     >
     <label class="trip-sort__btn" for="sort-${type}" data-sort-type="${type}">${type}</label>
   </div>`
 );
 
-const createSortItemsTemplate = () => {
+const createSortItemsTemplate = (currentSort) => {
   let sortItemsTemplate = '';
   const sort = Object.values(Sort);
 
-  sort.forEach((type, index) => {
-    sortItemsTemplate += createSortItemTemplate(type, index === 0);
+  sort.forEach((type) => {
+    sortItemsTemplate += createSortItemTemplate(type, currentSort);
   });
   return sortItemsTemplate;
 };
 
-const createSortTemplate = () => (
+const createSortTemplate = (currentSort) => (
   `<form class="trip-events__trip-sort trip-sort" action="#" method="get">
-    ${createSortItemsTemplate()}
+    ${createSortItemsTemplate(currentSort)}
   </form>`
 );
 
 export default class SortView extends AbstractView {
   #handleSortChange = null;
+  #currentSort = null;
 
-  constructor({ onSortChange }) {
+  constructor({ onSortChange, currentSort }) {
     super();
     this.#handleSortChange = onSortChange;
+    this.#currentSort = currentSort;
 
     this.element.addEventListener('click', this.#sortChangeHandler);
   }
 
   get template() {
-    return createSortTemplate();
+    return createSortTemplate(this.#currentSort);
   }
 
   #sortChangeHandler = (evt) => {

@@ -25,7 +25,7 @@ export const EventType = {
   RESTAURANT: 'restaurant'
 };
 
-export const EmptyListText = {
+export const NoPointsText = {
   EVERYTHING: 'Click New Event to create your first point',
   FUTURE: 'There are no future events now',
   PRESENT: 'There are no present events now',
@@ -35,6 +35,18 @@ export const EmptyListText = {
 export const PointState = {
   DEFAULT: 'DEFAULT',
   EDITING: 'EDITING'
+};
+
+export const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT'
+};
+
+export const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR'
 };
 
 export const EVENT_DATE_FORMAT = 'MMM D';
