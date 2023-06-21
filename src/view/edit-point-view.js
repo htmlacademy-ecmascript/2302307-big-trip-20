@@ -160,8 +160,9 @@ export default class EditPointView extends AbstractStatefulView {
   #datepickerTo = null;
   #handleFormSubmit = null;
   #handleFormClose = null;
+  #handleDeleteClick = null;
 
-  constructor({ point, destinations, offers, onFormSubmit, onFormClose }) {
+  constructor({ point, destinations, offers, onFormSubmit, onFormClose, onDeleteClick }) {
     super();
     this._setState(EditPointView.parsePointToState(point));
     this.#destinations = destinations;
@@ -169,6 +170,7 @@ export default class EditPointView extends AbstractStatefulView {
 
     this.#handleFormSubmit = onFormSubmit;
     this.#handleFormClose = onFormClose;
+    this.#handleDeleteClick = onDeleteClick;
     this._restoreHandlers();
   }
 
@@ -208,6 +210,8 @@ export default class EditPointView extends AbstractStatefulView {
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#formCloseHandler);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#destinationChangeHandler);
+    this.element.querySelector('.event__input--price').addEventListener('change', this.#priceChangeHandler);
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteHandler);
     this.element.querySelectorAll('.event__type-label').forEach((labelElement) => {
       labelElement.addEventListener('click', this.#typeChangeHandler);
     });
@@ -283,6 +287,23 @@ export default class EditPointView extends AbstractStatefulView {
     this._setState({
       offers: selectedOffers
     });
+  };
+
+  #priceChangeHandler = (evt) => {
+    evt.preventDefault();
+
+    if (!evt.target.value) {
+      return;
+    }
+
+    this._setState({
+      basePrice: evt.target.value
+    });
+  };
+
+  #formDeleteHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleDeleteClick(EditPointView.parseStateToPoint(this._state));
   };
 
   #dateFromHandler = ([userDate]) => {
